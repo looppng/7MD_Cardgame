@@ -9,6 +9,7 @@ type Card = {
 
 let selectedCards: Card[] = [];
 
+
 // CARDS
 
 const cards: Card[] = [
@@ -94,6 +95,7 @@ if (clickedCard.element) {
       alert("Winner Winner, Chichen Dinner!")
       resetButton.style.display = 'block';
       setTimeout(() => 3000);
+      clearInterval(timerInterval);
     }
   }
 
@@ -130,21 +132,44 @@ const resetCards = () => {
   });
 };
 
+const updateTimer = () => {
+  seconds++;
+
+  const timerElement = document.querySelector('.timer');
+  if (timerElement) {
+    timerElement.textContent = `Time: ${seconds} seconds`;
+  }
+};
+
+const startGame = () => {
+  shuffleCards();
+  resetCards();
+  renderCards();
+  seconds = 0;
+  timerInterval = setInterval(updateTimer, 1000);
+};
+
 
 
 // START GAME 
 const startButton = document.querySelector<HTMLButtonElement>('.button');
 const resetButton = document.querySelector<HTMLButtonElement>('.reset__button');
+let timerInterval: NodeJS.Timeout | null = null;
+let seconds = 0;
 
-startButton.onclick = () => {
-  shuffleCards();
-  renderCards();
-};
+startButton.onclick = startGame;
 
 resetButton.onclick = () => {
   shuffleCards();
   resetCards();
   renderCards();
+  clearInterval(timerInterval); 
+  seconds = 0; 
+  
+  const timerElement = document.querySelector('.timer')
+  if (timerElement) {
+    timerElement.textContent = 'Time: 0 seconds';
+  }
 }
 
 
