@@ -89,6 +89,12 @@ if (clickedCard.element) {
     if (selectedCards.length === 2) {
       setTimeout(() => checkMatch(), 1000);
     }
+
+    if (cards.every(card => card.isFlipped)) {
+      alert("Winner Winner, Chichen Dinner!")
+      resetButton.style.display = 'block';
+      setTimeout(() => 3000);
+    }
   }
 
     if (frontFace && backFace) {
@@ -118,16 +124,28 @@ const checkMatch = () => {
   }
 }
 
+const resetCards = () => {
+  cards.forEach(card => {
+    card.isFlipped = false;
+  });
+};
 
 
 
 // START GAME 
 const startButton = document.querySelector<HTMLButtonElement>('.button');
+const resetButton = document.querySelector<HTMLButtonElement>('.reset__button');
 
 startButton.onclick = () => {
-  shuffleCards(),
-  renderCards()
+  shuffleCards();
+  renderCards();
 };
+
+resetButton.onclick = () => {
+  shuffleCards();
+  resetCards();
+  renderCards();
+}
 
 
 
